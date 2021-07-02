@@ -1,0 +1,10 @@
+body {
+    width: 500px;
+    height: 200px;
+}
+
+#b_start{
+    margin-top: 30px;
+    margin-bottom: 15px;
+    width: 90px;
+}
