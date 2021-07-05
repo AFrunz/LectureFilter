@@ -5,29 +5,32 @@
     <meta charset="UTF-8">
     <title>Фильтр</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<!--    <script src="main.js"></script>-->
+    <script src="main.js"></script>
 </head>
 <body>
 <link rel="stylesheet" href="style.css">
 <img style="margin-top: 2px; margin-left: 2px" alt="" src="icon.ico">
 <br>
+
+
 <div class="container-fluid">
-        <label for="l_name"></label>
-        <select name="l_name" id="l_name" class="form-select">
+    <output>FFFFF</output>
+    <input type="number" id="i_num" class="input-number" placeholder="Введите количество страниц" required value="5">
+    <label for="l_name"></label>
+        <select name="l_name" id="l_name" class="select-css">
             <option value="">Выберите название</option>
         </select>
         <label for="l_type"></label>
-        <select name="l_type" id="l_type" class="form-select">
+        <select name="l_type" id="l_type" class="select-css">
             <option value="">Выберите тип</option>
         </select>
-    <div class="text-center">
         <button id="b_start" type="button" class="btn btn-outline-secondary">Start</button>
-    </div>
 </div>
+
+
 
 <div hidden class="container-fluid text-center">
     <h3>Перейдите на сайт home.mephi.ru и войдите в учетную запись</h3>
 </div>
-
 </body>
 </html>
