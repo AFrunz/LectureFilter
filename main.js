@@ -15,6 +15,7 @@ function getItem(a){
     return b;
 }
 
+
 function pushItem(a){
     // Запись a в массив res
     if (a.getElementsByClassName("label label-default label-lesson")[0].innerText === ""){
@@ -105,18 +106,52 @@ function showData(){
     //     console.log(`${i}: ${name[num_n][i]}`)
     // }
     let listGroup = document.getElementsByClassName("list-group")[0]
-    for (let i = 0; i < res[num_t].Items.length; i++){
-        console.log(res[num_t].Items[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim(), selected_name)
-        if (res[num_t].Items[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim() === selected_name){
-            console.log(res[num_t].Items[i])
-            // for (let j in res[num_t].Items[i]){
-            //     console.log(`${j}: ${res[num_t].Items[i][j]}`)
-            // }
-            // listGroup.innerHTML += res[num_t].Items[i];
-            // listGroup.insertAdjacentHTML("beforeend", res[num_t].Items[i])
-            listGroup.append(res[num_t].Items[i])
-        }
+    let arr = sort(res[num_t].Items, selected_name)
+    for (let i = 0; i < arr.length; i++){
+        listGroup.append(arr[i])
     }
+    // for (let i = 0; i < res[num_t].Items.length; i++){
+    //     console.log(res[num_t].Items[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim(), selected_name)
+    //     if (res[num_t].Items[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim() === selected_name){
+    //         console.log(res[num_t].Items[i])
+    //         // for (let j in res[num_t].Items[i]){
+    //         //     console.log(`${j}: ${res[num_t].Items[i][j]}`)
+    //         // }
+    //         // listGroup.innerHTML += res[num_t].Items[i];
+    //         // listGroup.insertAdjacentHTML("beforeend", res[num_t].Items[i])
+    //         listGroup.append(res[num_t].Items[i])
+    //     }
+    // }
+}
+function getNumberLink(obj){
+    let num = obj.pathname.lastIndexOf("/")
+    num = obj.pathname.slice(num + 1, obj.pathname.length)
+    return parseInt(num)
+}
+
+function sort(array, target){
+//    Сортировка по дате
+    let result = []
+    let flag = false
+    for (let i = 0; i < array.length; i++){
+       if (array[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim() === target){
+           for (let j = 0; j < result.length; j++){
+               if (getNumberLink(array[i].getElementsByTagName("a")[0]) >
+                   getNumberLink(result[j].getElementsByTagName("a")[0]) ){
+                        result.splice(j, 0, array[i]);
+                        flag = true
+                        break
+               }
+           }
+           printObj(result)
+           if ((result.length === 0) || (!flag)){
+               result.push(array[i])
+           }
+       }
+           // result.push(array[i])
+        }
+    printObj(result)
+    return result
 }
 
 
@@ -124,7 +159,7 @@ function showData(){
 function showChoiceType(){
     // Заполнение select, отвечающего за тип
     let l_type = document.getElementById("l_type")
-    let type = "";
+    let type = ""
     for (let i = 1; i < res.length; i++){
         if (l_type.innerHTML.indexOf(`>${res[i].type}</option>`) == -1){
             l_type.innerHTML = l_type.innerHTML + `<option value="${i}">${res[i].type}</option>\n`
@@ -159,6 +194,12 @@ function showFilter(){
     node.replaceWith()
 }
 
+function printObj(obj){
+    for (let i in obj){
+        console.log(`${i}: ${obj[i]}`)
+    }
+}
+
 
 function showChoiceName(){
     // Меняет select в зависимости от выбраного типа
@@ -190,7 +231,7 @@ function showChoiceName(){
 
 
 //Получение данных
-mainParse(25)
+mainParse(35)
 showFilter()
 document.querySelector("#b_start").onclick = function(){
     showData()
