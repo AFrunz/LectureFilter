@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches":  ["https://home.mephi.ru/*"],
-      "js": ["jquery-3.6.0.min.js", "main.js", "start.js"],
+      "js": ["jquery-3.6.0.min.js", "main.js"],
       "css": ["style.css"]
     }
   ],
