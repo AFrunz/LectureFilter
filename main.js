@@ -8,16 +8,18 @@ res = [{
 
 function getItem(a){
     // Получение элемента массива из объекта документа
-    let b = {
+    return {
         type: a.getElementsByClassName("label label-default label-lesson")[0].innerText,
         Items: [a]
-    }
-    return b;
+    };
 }
 
 
 function pushItem(a){
     // Запись a в массив res
+    if (a.getElementsByClassName("label label-default label-lesson").length === 0){
+        return;
+    }
     if (a.getElementsByClassName("label label-default label-lesson")[0].innerText === ""){
         res[0].Items.push(a);
         return;
@@ -38,16 +40,11 @@ function pushItem(a){
 
 function mainParse(n){
     // Основа, мб будет доработана
-    let link = window.location
-    let results = new Object()
+    let link = window.location.href
     for (let i = 1; i <= n; i++){
         let data = getData(link + "&page=" + i.toString())
-        // console.log(i.toString())
-        // console.log(data)
-        // console.log(typeof data)
-        results = parse(data, results)
+        parse(data, results)
     }
-    return results
 }
 
 
@@ -57,11 +54,10 @@ function getData(link){
     //Получение страниц с лекциями
     var xhr = new XMLHttpRequest()
     var parser = new DOMParser()
-    // console.log(link)
     xhr.open("GET", link, true)
     xhr.send();
     xhr.onreadystatechange = function (){
-        if (xhr.readyState != 4) return;
+        if (xhr.readyState !== 4) return;
         var x = xhr.responseText
         var t = parser.parseFromString(x, "text/html")
         parse(t)
@@ -78,11 +74,8 @@ function parse(data){
     else{
         return;
     }
-    // console.log(data)
-    // console.log(t)
     for (let i = 0; i < t.length; i++){
        pushItem(t[i])
-        // console.log(t[i])
     }
     showChoiceType()
 }
@@ -90,7 +83,7 @@ function parse(data){
 function showData(){
     // Отображение данных по кнопке
     let items = document.getElementsByClassName("list-group-item")
-    while (items.length != 0){
+    while (items.length !== 0){
         for (let i = 0; i < items.length; i++){
             items[i].replaceWith()
         }
@@ -101,27 +94,15 @@ function showData(){
     const name = document.getElementById("l_name")
     const num_t = type.selectedIndex - 1
     const num_n = name.selectedIndex
+    if (num_n === 0 || num_t === -1){
+        return;
+    }
     const selected_name = name[num_n].label.split('\n').join(' ').trim()
-    // for (let i in name[num_n]){
-    //     console.log(`${i}: ${name[num_n][i]}`)
-    // }
     let listGroup = document.getElementsByClassName("list-group")[0]
     let arr = sort(res[num_t].Items, selected_name)
     for (let i = 0; i < arr.length; i++){
         listGroup.append(arr[i])
     }
-    // for (let i = 0; i < res[num_t].Items.length; i++){
-    //     console.log(res[num_t].Items[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim(), selected_name)
-    //     if (res[num_t].Items[i].getElementsByTagName("span")[0].innerText.split('\n').join(' ').trim() === selected_name){
-    //         console.log(res[num_t].Items[i])
-    //         // for (let j in res[num_t].Items[i]){
-    //         //     console.log(`${j}: ${res[num_t].Items[i][j]}`)
-    //         // }
-    //         // listGroup.innerHTML += res[num_t].Items[i];
-    //         // listGroup.insertAdjacentHTML("beforeend", res[num_t].Items[i])
-    //         listGroup.append(res[num_t].Items[i])
-    //     }
-    // }
 }
 function getNumberLink(obj){
     let num = obj.pathname.lastIndexOf("/")
@@ -143,14 +124,11 @@ function sort(array, target){
                         break
                }
            }
-           printObj(result)
            if ((result.length === 0) || (!flag)){
                result.push(array[i])
            }
        }
-           // result.push(array[i])
         }
-    printObj(result)
     return result
 }
 
@@ -165,15 +143,8 @@ function showChoiceType(){
             l_type.innerHTML = l_type.innerHTML + `<option value="${i}">${res[i].type}</option>\n`
         }
     }
-    // console.log(type)
     return type
 }
-
-
-
-//#-id
-//.-class-name
-// - all el-s
 
 function showFilter(){
     // Отображение фильтра на странице
@@ -205,7 +176,10 @@ function showChoiceName(){
     // Меняет select в зависимости от выбраного типа
     let type = document.getElementById("l_type")
     const num = type.selectedIndex
-    console.log(num)
+    if (num === 0) {
+        return;
+    }
+    // console.log(num)
     let name = document.getElementById("l_name")
     name.innerHTML = "<option value=\"\">Выберите название</option>"
     for (let i = 0; i < res[num - 1].Items.length; i++){
@@ -213,33 +187,18 @@ function showChoiceName(){
             name.innerHTML += `<option value="${i}">${res[num - 1].Items[i].getElementsByTagName("span")[0].innerText}</option>\n`
         }
     }
-    // for (let i in res[num].Items[0]){
-    //     console.log(`${i}: ${res[num].Items[0][i]}`)
-    // }
-    // console.log(res[num].Items[0])
-    // console.log(res)
 }
 
-
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     var link = document.getElementById('b_start');
-//     // onClick's logic below:
-//     link.addEventListener('click', showData())
-// });
-
-
-//Получение данных
-mainParse(35)
-showFilter()
-document.querySelector("#b_start").onclick = function(){
-    showData()
-}
-document.querySelector("#l_type").onchange = function(){
-    showChoiceName()
+window.onload = function (){
+    if (window.location.href.indexOf("https://home.mephi.ru/lesson_videos/") !== -1) {
+        mainParse(20)
+        showFilter()
+        document.querySelector("#b_start").onclick = function(){
+            showData()
+        }
+        document.querySelector("#l_type").onchange = function(){
+            showChoiceName()
+        }
+    }
 }
 
-
-//Отображение фильтра
-// Нажатие на кнопку поиска

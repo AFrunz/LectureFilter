@@ -1,19 +1,26 @@
 {
   "manifest_version": 2,
-  "name": "test",
-  "description": "test",
+  "name": "Фильтр по лекциям (alpha)",
   "version": "1.0",
-  "browser_action": {
-    "default_popup":  "popup.html"
-  },
+
+  "description": "Данное расширение позволяет удобно фильтровать лекции по выбранному предмету. Если фильтр не отображается - перезагрузите страницу",
+
+
+
+  "icons": {"16": "icon.png",
+            "48": "icon.png",
+            "128": "icon.png"},
+
   "content_scripts": [
     {
       "matches":  ["https://home.mephi.ru/*"],
-      "js": ["main.js"],
+      "js": ["jquery-3.6.0.min.js", "main.js", "start.js"],
       "css": ["style.css"]
     }
   ],
   "permissions": [
     "activeTab"
-  ]
+  ],
+
+  "author": "AFrunz"
 }
