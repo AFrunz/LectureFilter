@@ -18,13 +18,16 @@ function getData(numberOfPages){
     let promise = Promise.all(requests);
     promise.then(responses => {
         return responses.map(response => response.text());              // Парсинг в текст
-    }).then(result => result.forEach(item => item.then(
-        result2 => {
-            let html = getHTML(result2);     // Получение текста и передача в функцию преобразования в HTML
-            parseVideos(html);               // Получение блоков видео со страниц и запись их в res
+    }).then(result => {
+        result.forEach(item => item.then(
+            result2 => {
+                let html = getHTML(result2);     // Получение текста и передача в функцию преобразования в HTML
+                parseVideos(html);               // Получение блоков видео со страниц и запись их в res
 
-        }
-    )));
+            }
+        ));           // Конец forEach
+        showChoiceType();
+    });
 }
 
 function getHTML(text){
@@ -36,22 +39,25 @@ function getHTML(text){
 }
 
 function parseVideos(htmlCode){
-    // console.log(ty);
+    // Получает блоки с видео и записывает в массив
+    // Входные данные: Код страницы
+    // Выходные данные:
     let items = $(htmlCode).find(".list-group-item");
-    console.log(items);
     for (let i = 0; i < items.length; i++){
-        console.log("hi")
+        // console.log("hi")
         pushItem(items[i]);
     }
-    console.log(res);
+    // console.log(res);
 }
 
 function pushItem(block){
-    console.log($(block).find(".label.label-default.label-lesson"));
+    // Записывает блоки с видео в массив res
+    // Входные данные: блок с лекцией
+    // Выходные данные:
+    // console.log($(block).find(".label.label-default.label-lesson"));
     if ($(block).find(".label.label-default.label-lesson").length === 0) {
         return;
     }
-    alert(block);
     if ($(block).find(".label.label-default.label-lesson")[0].innerText === ""){
         res[0].Items.push(block);
         return;
@@ -69,12 +75,44 @@ function pushItem(block){
 
 function getItem(a){
     // Получение элемента массива из объекта документа
+    // Входные данные: Блок с видео
+    // Выходные данные:
     return {
-        type: $(a).find(".label label-default label-lesson")[0].innerText,
+        type: $(a).find(".label.label-default.label-lesson")[0].innerText,
         Items: [a]
     };
 }
 
+function showChoiceType(){
+    console.log(res, res.length);
+    for (let i = 0; i < res.length; i++){
+        $("#l_type").append(`<option value=\\"${i}">${res[i].type}</option>\\n`);
+        // console.log("0");
+    }
+}
 
 
-getData(3)
+
+
+
+
+function showFilter(){
+    // Отображение фильтра на странице
+    let node = $(".pagination");
+    let strs =  "<div class=\"container-fluid\">\n" +
+        "    <label for=\"l_type\"></label>\n" +
+        "    <select name=\"l_type\" id=\"l_type\" class=\"select-css\">\n" +
+        "        <option value=\"\">Выберите тип</option>\n" +
+        "    </select>\n" +
+        "    <label for=\"l_name\"></label>\n" +
+        "    <select name=\"l_name\" id=\"l_name\" class=\"select-css\">\n" +
+        "        <option value=\"\">Выберите название</option>\n" +
+        "        </select>\n" +
+        "    <button id=\"b_start\" type=\"button\" class=\"btn btn-outline-secondary\">Start</button>\n" +
+        "</div>";
+    node.replaceWith(strs);
+}
+
+
+getData(3);
+showFilter();

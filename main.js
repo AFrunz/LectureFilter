@@ -5,7 +5,7 @@ res = [{
 
 
 
-
+//
 function getItem(a){
     // Получение элемента массива из объекта документа
     return {
@@ -14,7 +14,7 @@ function getItem(a){
     };
 }
 
-
+//
 function pushItem(a){
     // Запись a в массив res
     if (a.getElementsByClassName("label label-default label-lesson").length === 0){
@@ -49,7 +49,7 @@ function mainParse(n){
 
 
 
-
+//
 function getData(link){
     //Получение страниц с лекциями
     var xhr = new XMLHttpRequest()
@@ -65,7 +65,7 @@ function getData(link){
     }
 }
 
-
+//
 function parse(data){
     //Получение данных со страницы (блоков лекций)
     if (data){
@@ -104,6 +104,7 @@ function showData(){
         listGroup.append(arr[i])
     }
 }
+
 function getNumberLink(obj){
     let num = obj.pathname.lastIndexOf("/")
     num = obj.pathname.slice(num + 1, obj.pathname.length)
@@ -146,6 +147,7 @@ function showChoiceType(){
     return type
 }
 
+//
 function showFilter(){
     // Отображение фильтра на странице
     let node = document.getElementsByClassName("pagination")[0]
@@ -164,7 +166,7 @@ function showFilter(){
     node.insertAdjacentHTML("afterend", strs)
     node.replaceWith()
 }
-
+//
 function printObj(obj){
     for (let i in obj){
         console.log(`${i}: ${obj[i]}`)
