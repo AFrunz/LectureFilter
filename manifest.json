@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Фильтр по лекциям (alpha)",
-  "version": "1.0",
+  "version": "2.0",
 
   "description": "Данное расширение позволяет удобно фильтровать лекции по выбранному предмету. Если фильтр не отображается - перезагрузите страницу",
 
@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches":  ["https://home.mephi.ru/*"],
-      "js": ["jquery-3.6.0.min.js", "main.js"],
+      "js": ["jquery-3.6.0.min.js", "mainV2.js"],
       "css": ["style.css"]
     }
   ],

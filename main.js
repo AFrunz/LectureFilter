@@ -43,7 +43,7 @@ function mainParse(n){
     let link = window.location.href
     for (let i = 1; i <= n; i++){
         let data = getData(link + "&page=" + i.toString())
-        parse(data, results)
+        parse(data)
     }
 }
 
