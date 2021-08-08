@@ -1,4 +1,4 @@
-res = [{
+let res = [{
     type: "Остальное",
     Items: []
 }]
